@@ -151,6 +151,7 @@ def get_data(url):
         n = n + 1
         no_of_reviews = get_no_of_reviews(content)
         #no_of_reviews = no_of_reviews + 1
+        # For now scraping only first 10 pages..
         if no_of_reviews == 0:
             scraping_completed = True
 
