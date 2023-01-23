@@ -102,7 +102,6 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
     #soup = get_response(url)
     product = soup.find('a', class_ = "a-link-normal").text.strip()
     print("\t\t\tP R O D U C T     :   ", product)
-    #fetched_reviews = []
     print("---------->   LENGTH  :  ", len(soup.find_all('div', {'data-hook': "review"})))
     for review in soup.find_all('div', {'data-hook': "review"}):
         customer_name = review.find('span', class_ = "a-profile-name").text
@@ -114,7 +113,6 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
         vote = get_vote(review)
         img_links = get_review_images(review)
 
-        #['Customer Name', 'Variant', 'Rating(Out of 5)', 'Rating', 'Date of Review', 'Comment', 'Review', 'Images attatched by Customer', 'Votes on the Review']
         fetched_reviews.append([customer_name, variant, rating, get_star(rating), date, comment, body, img_links, vote])
 
         # Printing the details..
@@ -128,8 +126,6 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
         print("VOTE      :   ", vote)
       
     return product
-    # Save to CSV..
-    #save_to_csv(product, fetched_reviews)
 
 def get_no_of_reviews(content):
     no = content.find('div', class_ = "a-row a-spacing-base a-size-base").text.strip()
