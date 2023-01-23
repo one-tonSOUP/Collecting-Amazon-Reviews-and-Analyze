@@ -78,7 +78,7 @@ def save_to_csv(product, fetched_reviews):
     for char in replace_characters:
         if char in product:
             product = product.replace(char, "")
-    # Too long name seems to be an issue while adding these files in github so set the limit of the filename to 60 characters..
+    # Too long name seems to be an issue while adding these files in github so setting the limit of the filename to 60 characters..
     product = product[0:60]
     file_path = str(product) + '(Product Page, Visited on ' + str(page_visit_details) + ').csv'
     # write the information to a CSV file..
