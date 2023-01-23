@@ -9,7 +9,6 @@ def get_response(url):
     return BeautifulSoup(response.text, 'html.parser')
 
 #page_content = get_response(url)
-
 fetched_reviews = []
 
 # This code works for Amazon India..
@@ -21,9 +20,7 @@ def get_review_link(url):
     return review_page_link
 
 #"https://p-nt-www-amazon-in-kalias.amazon.in/Xiaomi-Storage-Snapdragon-Flagship-Cameras/product-reviews/B09XBCCQJT/ref=cm_cr_arp_d_paging_btm_next_2?reviewerType=all_reviews&pageNumber=2"
-
 #"https://p-nt-www-amazon-in-kalias.amazon.in/Xiaomi-Storage-Snapdragon-Flagship-Cameras/product-reviews/B09XBCCQJT?reviewerType=all_reviews"
-
 # Navigating through the pages..
 #print(get_review_link(url) + "&pageNumber=" + str(2))
 
