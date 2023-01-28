@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import json
 from datetime import datetime
 import os
 
@@ -91,8 +92,34 @@ def save_to_csv(product, fetched_reviews):
     print("-----------------------------------------------------------------------------------------------------------------------------------\n\n")
     print(f'The absolute path of the CSV file is: {absolute_path}\nVisited on {page_visit_details}')
 
-def save_to_json():
-    pass
+def save_to_json(product, fetched_reviews):
+    data = {}
+    key = ['Customer Name', 'Variant', 'Rating(Out of 5)', 'Rating', 'Date of Review', 'Comment', 'Review', 'Images attatched by Customer', 'Votes on the Review']
+    page_visit_details = datetime.now().strftime("%B %d %Y, %H-%M-%S")
+    # Applying this filter because the file cannot be saved into the system with these special characters in file name..
+    replace_characters = [':', '\\', '|', '/', '*', '?', '"', '<', '>']
+    for char in replace_characters:
+        if char in product:
+            product = product.replace(char, "")
+    # Too long name seems to be an issue while adding these files in github so set the limit of the filename to 60 characters..
+    product = product[0:60]
+    file_path = str(product) + '(Product Page, Visited on ' + str(page_visit_details) + ').json'
+    jsonfile = open(file_path, 'w', newline='', encoding='utf-8')
+    json_object = json.dumps(data, indent = 4)
+    for review in fetched_reviews:
+        data['Customer Name'] = review[0]
+        data['Variant'] = review[1]
+        data['Rating(Out of 5)'] = review[2]
+        data['Rating'] = review[3]
+        data['Date of Review'] = review[4]
+        data['Comment'] = review[5]
+        data['Review'] = review[6]
+        data['Images attatched by Customer'] = review[7]
+        data['Votes on the Review'] = review[8]
+        json_object = json.dumps(data, indent = 4)
+        jsonfile.write(json_object)
+    #with open(file_path, 'w', newline='', encoding='utf-8') as jsonfile:
+    #    jsonfile.write(json_object)
 
 # Getting information from the individual pages..
 def scrape(soup):               # Replaced 'url' with 'soup'..
@@ -151,6 +178,7 @@ def get_data(url):
 
     print("\n\n\tScraping completed, writing into a file..")
     save_to_csv(product, fetched_reviews)
+    save_to_json(product, fetched_reviews)
 
 url = "https://p-nt-www-amazon-in-kalias.amazon.in/Xiaomi-Storage-Snapdragon-Flagship-Cameras/dp/B09XBCCQJT/ref=cm_cr_arp_d_product_top?ie=UTF8&th=1"
 
