@@ -100,6 +100,7 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
     product = soup.find('a', class_ = "a-link-normal").text.strip()
     print("\t\t\tP R O D U C T     :   ", product)
     print("---------->   LENGTH  :  ", len(soup.find_all('div', {'data-hook': "review"})))
+    fetched_reviews.clear()
     for review in soup.find_all('div', {'data-hook': "review"}):
         customer_name = review.find('span', class_ = "a-profile-name").text
         rating = get_rating(review)
