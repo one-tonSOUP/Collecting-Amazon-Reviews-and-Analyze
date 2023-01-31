@@ -127,7 +127,6 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
     product = soup.find('a', class_ = "a-link-normal").text.strip()
     print("\t\t\tP R O D U C T     :   ", product)
     print("---------->   LENGTH  :  ", len(soup.find_all('div', {'data-hook': "review"})))
-    fetched_reviews.clear()
     for review in soup.find_all('div', {'data-hook': "review"}):
         customer_name = review.find('span', class_ = "a-profile-name").text
         rating = get_rating(review)
@@ -164,6 +163,7 @@ def get_data(url):
     n = 1
     #s_no = 0
     no_of_reviews = 0
+    fetched_reviews.clear()
     while scraping_completed == False:
         #print("S. No.     :   ", s_no + 1)
         print("\n\n\tCurrently on Page : ", n)
