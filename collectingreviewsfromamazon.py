@@ -144,9 +144,7 @@ def scrape(soup):               # Replaced 'url' with 'soup'..
     return product
 
 def get_no_of_reviews(content):
-    no = content.find('div', class_ = "a-row a-spacing-base a-size-base").text.strip()
-    no = no.split(", ")[-1]
-    no = int(no.split(" with")[0])
+    no = len(content.find_all('div', {'data-hook': "review"}))
     return no
 
 def get_data(url):
