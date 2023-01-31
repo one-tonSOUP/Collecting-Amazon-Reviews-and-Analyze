@@ -69,16 +69,19 @@ def get_review_images(review):
             img_links.append(media_link)
     return ', '.join(img_links)
 
-def save_to_csv(product, fetched_reviews):
+def get_filename(product):
     page_visit_details = datetime.now().strftime("%B %d %Y, %H-%M-%S")
     # Applying this filter because the file cannot be saved into the system with these special characters in file name..
-    replace_characters = [':', '\\', '|', '/', '*', '?', '"', '<', '>']
+    replace_characters = [':', '\\', '/', '*', '?', '"', '<', '>']
     for char in replace_characters:
         if char in product:
             product = product.replace(char, "")
-    # Too long name seems to be an issue while adding these files in github so setting the limit of the filename to 60 characters..
-    product = product[0:60]
-    file_path = str(product) + '(Product Page, Visited on ' + str(page_visit_details) + ').csv'
+    # Too long name seems to be an issue while adding these files in github so set the limit of the filename to 60 characters..
+    product = product[:product.index('|')].strip()
+    return str(product) + '(Visited on ' + str(page_visit_details) + ')'
+
+def save_to_csv(product, fetched_reviews):
+    file_path = get_filename(product) + '.csv'
     # write the information to a CSV file..
     with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
         csv_writer = csv.writer(csvfile)
@@ -90,20 +93,11 @@ def save_to_csv(product, fetched_reviews):
     # Print the absolute path
     print("\n\n___________________________________________________________________________________________________________________________________")
     print("-----------------------------------------------------------------------------------------------------------------------------------\n\n")
-    print(f'The absolute path of the CSV file is: {absolute_path}\nVisited on {page_visit_details}')
+    print(f'The absolute path of the CSV file is: {absolute_path}\nFile     :   {file_path}')
 
 def save_to_json(product, fetched_reviews):
     data = {}
-    key = ['Customer Name', 'Variant', 'Rating(Out of 5)', 'Rating', 'Date of Review', 'Comment', 'Review', 'Images attatched by Customer', 'Votes on the Review']
-    page_visit_details = datetime.now().strftime("%B %d %Y, %H-%M-%S")
-    # Applying this filter because the file cannot be saved into the system with these special characters in file name..
-    replace_characters = [':', '\\', '|', '/', '*', '?', '"', '<', '>']
-    for char in replace_characters:
-        if char in product:
-            product = product.replace(char, "")
-    # Too long name seems to be an issue while adding these files in github so set the limit of the filename to 60 characters..
-    product = product[0:60]
-    file_path = str(product) + '(Product Page, Visited on ' + str(page_visit_details) + ').json'
+    file_path = get_filename(product) + '.json'
     jsonfile = open(file_path, 'w', newline='', encoding='utf-8')
     json_object = json.dumps(data, indent = 4)
     for review in fetched_reviews:
@@ -118,8 +112,6 @@ def save_to_json(product, fetched_reviews):
         data['Votes on the Review'] = review[8]
         json_object = json.dumps(data, indent = 4)
         jsonfile.write(json_object)
-    #with open(file_path, 'w', newline='', encoding='utf-8') as jsonfile:
-    #    jsonfile.write(json_object)
 
 # Getting information from the individual pages..
 def scrape(soup):               # Replaced 'url' with 'soup'..
